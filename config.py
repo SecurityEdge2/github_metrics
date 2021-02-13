@@ -1,8 +1,8 @@
 config = {
     'app_weight': {
-        'ClickHouse/ClickHouse': 12,
-        'authelia/authelia' : 10,
-        'gravitational/teleport' : 13
+        'ClickHouse/ClickHouse': 13,
+        'authelia/authelia' : 9,
+        'gravitational/teleport' : 17
     },
     'github_severity_list': (
         #(comments_count, Severity)
@@ -14,11 +14,18 @@ config = {
     ),
     'defect_criticality_dict': {
     #{Severity, criticality rate}
-        'Critical': 10,
-        'High': 5,
-        'Medium': 2,
-        'Low':   1
+        'Critical': 5,
+        'High': 2.5,
+        'Medium': 1,
+        'Low':   0.5
     },
+    'fix_time': {
+        'Critical': 1,
+        'High': 2,
+        'Medium': 60,
+        'Low': 120
+    },
+
     'mongodb': {
         'host':'localhost',
         'port': 27017,

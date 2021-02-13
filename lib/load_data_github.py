@@ -36,7 +36,9 @@ def _normolize_data(issues, github_repo):
                             start_date=issue.created_at,
                             end_date=end_date,
                             severity=severity,
-                            project=project))
+                            project=project,
+                            title=issue.title,
+                            labelts=issue.labels))
 
 
     return result
