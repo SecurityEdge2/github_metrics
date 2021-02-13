@@ -4,11 +4,24 @@ config = {
         'authelia/authelia' : 10,
         'gravitational/teleport' : 13
     },
-    'defect_criticality': (
-    #(count_comments, criticality)
-        (11, 10),  # 12-infitly - Critical
-        (8, 5),  # 9-11 -Hight
-        (3, 2),  # 4-8  - medium
-        (0,   1)  #0-3  - low
-    )
+    'github_severity_list': (
+        #(comments_count, Severity)
+        (11, 'Critical'),
+        (8, 'High'),
+        (3, 'Medium'),
+        (0, 'Low')
+
+    ),
+    'defect_criticality_dict': {
+    #{Severity, criticality rate}
+        'Critical': 10,
+        'High': 5,
+        'Medium': 2,
+        'Low':   1
+    },
+    'mongodb': {
+        'host':'localhost',
+        'port': 27017,
+        'db': 'WRT'
+    }
 }
