@@ -13,7 +13,7 @@ def calculate_wrt_timeline(issues, app_weight):
         severity = issue['severity']
         defect_criticality = dc_dict[severity]
         issue_wrt = defect_criticality *app_weight
-        return issue_wrt
+        return dict(wrt=issue_wrt,severity=severity,defect_criticality=defect_criticality,app_weight=app_weight)
 
     #инициализируем переменные
     first_date = (datetime.now() + timedelta(days=1))
@@ -25,7 +25,8 @@ def calculate_wrt_timeline(issues, app_weight):
             if issue['end_date'] > end_date:
                 end_date = issue['end_date']
             #подсчитываем criticality для конкретного issue
-            issue['criticality'] = calculate_wrt_for_issue(issue,app_weight,config['defect_criticality_dict'])
+            #issue['criticality'] = calculate_wrt_for_issue(issue,app_weight,config['defect_criticality_dict'])
+            issue.update(calculate_wrt_for_issue(issue,app_weight,config['defect_criticality_dict']))
 
     timeline = list()
     iter_day = first_date
@@ -34,10 +35,13 @@ def calculate_wrt_timeline(issues, app_weight):
         #date=iter_day.strftime('%d/%m/%Y')
         unit = dict(criticality=0, date=iter_day)
         for issue in issues:
+            unit = dict(criticality=0, date=iter_day)
             if issue['start_date'] <= iter_day and iter_day <= issue['end_date']:
-                unit['criticality'] += issue['criticality']
+                unit['wrt'] = issue['wrt']
                 unit['project'] = issue['project']
-        timeline.append(unit)
+                unit['app_weight'] = issue['app_weight']
+                unit['severity'] = issue['severity']
+                timeline.append(unit)
         iter_day += timedelta(days=1)
 
 
