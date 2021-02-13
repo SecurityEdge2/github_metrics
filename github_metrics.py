@@ -5,17 +5,20 @@ from config import config
 
 
 
+def load_issues(github_repo_url, security_labels):
+    return load_data_from_github(github_repo_url, security_labels)
 
-def load_issues(github_repo_url):
-    return load_data_from_github(github_repo_url)
-
-def upload_data(timeline):
-    upload_data_to_mongodb(timeline)
+def upload_data(timeline, collection):
+    upload_data_to_mongodb(timeline, collection)
 
 projects = config['app_weight']
-for current_project, app_weight in projects.items():
-    issues = load_issues(current_project)
-    timeline = calculate_drw_timeline(issues, app_weight)
-    export_status = upload_data(timeline)
+for current_project, value in projects.items():
+    app_weight, security_label = value
+    issues = load_issues(current_project, security_label)
+    timeline = calculate_wrt_timeline(issues, app_weight)
+    timeline2 = calculate_drw_timeline(issues, app_weight)
+
+    export_status = upload_data(timeline,  'wrt')
+    export_status = upload_data(timeline2, 'drw')
 
 print('Done')
