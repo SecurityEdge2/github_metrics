@@ -1,8 +1,15 @@
 config = {
     'app_weight': {
-        'ClickHouse/ClickHouse': 13,
-        'authelia/authelia' : 9,
-        'gravitational/teleport' : 17
+        'ClickHouse/ClickHouse': (13,'security'),
+        'authelia/authelia' : (9,'security'),
+        'gravitational/teleport' : (17,'security'),
+        'rust-lang/rust': (5,'A-security'),
+        'openshift/origin': (7,'area/security'),
+        'kubernetes/kubernetes': (7,'area/security '),
+        'ansible/ansible': (14, 'security'),
+        'dotnet/runtime': (12,'Security'),
+        'nodejs/node': (16,'security')
+
     },
     'github_severity_list': (
         #(comments_count, Severity)
