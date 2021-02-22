@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from config import config
 
-def upload_data_to_mongodb(timeline, coolections):
+def upload_to_mongodb(timeline, coolections):
     mongodb_config = config['mongodb']
     client = MongoClient(mongodb_config['host'], mongodb_config['port'])
     db = client['wrt4']

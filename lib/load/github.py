@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 
 #загрузка данных из github
-def load_data_from_github(github_repo,security_labels):
+def load_from_github(github_repo, security_labels):
     g = Github(os.environ['github_token'])
     repo = g.get_repo(github_repo)
     issues = repo.get_issues(labels=security_labels, state='all')
