@@ -34,7 +34,7 @@ config = {
     },
 
     'mongodb': {
-        'host':'localhost',
+        'host':'192.168.49.20',
         'port': 27017,
         'db': 'WRT'
     }

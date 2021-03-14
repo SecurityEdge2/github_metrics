@@ -15,10 +15,12 @@ projects = config['app_weight']
 for current_project, value in projects.items():
     app_weight, security_label = value
     issues = load_issues(current_project, security_label)
-    timeline = calculate_wrt_timeline(issues, app_weight)
-    timeline2 = calculate_drw_timeline(issues, app_weight)
+    m_wrt, q_wrt = calculate_wrt_timeline(issues, app_weight)
+    #drw = calculate_drw_timeline(issues, app_weight)
 
-    export_status = upload_data(timeline,  'wrt')
-    export_status = upload_data(timeline2, 'drw')
+    export_status = upload_data(q_wrt,  'wrt_q')
+    export_status = upload_data(m_wrt, 'wrt_m')
+    #export_status = upload_data(drw, 'drw')
+    exit(0)
 
 print('Done')

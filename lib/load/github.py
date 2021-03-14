@@ -10,6 +10,7 @@ def load_from_github(github_repo, security_labels):
     repo = g.get_repo(github_repo)
     issues = repo.get_issues(labels=security_labels, state='all')
     issues = _normolize_data(list(issues),github_repo)
+    issues.sort(key=lambda x:x['start_date'])
     return issues
 
 #приведение к универсальному формату
