@@ -26,10 +26,9 @@ for current_project, value in projects.items():
     #export_status = upload_data(drw, 'drw')
 
     data = load_jira()
-    m_wrt, q_wrt = calculate_wrt_timeline(data, None)
-    drw = calculate_drw_timeline(data, None)
-    export_status = upload_data(q_wrt,  'wrt_q')
-    export_status = upload_data(m_wrt, 'wrt_m')
+    wrt = calculate_wrt_timeline(data, None)
+    #drw = calculate_drw_timeline(data, None)
+    export_status = upload_data(wrt,  'wrt')
     exit(0)
 
 print('Done')

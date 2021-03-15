@@ -48,6 +48,7 @@ def _normolize_data(issues):
     results = list()
     for issue in issues:
         if issue['target_url'] is None:
+            print(issue['key'])
             continue
         if issue['target_url'][-1] == '/':
             issue['target_url'] = issue['target_url'][:-1]
