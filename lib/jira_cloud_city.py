@@ -3,7 +3,7 @@ import os
 import pytz
 from pprint import pprint
 from datetime import datetime
-from JiraAPI import JiraAPI
+from lib.JiraAPI import JiraAPI
 
 
 class H1Issues:
@@ -11,8 +11,8 @@ class H1Issues:
         self.arr_parsed_issues_row = []
         self.arr_unique_target_url = []
         self.list_vuln_score = []
-        self.get_issues_row(h1_issues_json)
-        pass
+        self.results = self.get_issues_row(h1_issues_json)
+
 
     def getIssuesRow(self):
         return self.arr_parsed_issues_row
@@ -46,7 +46,9 @@ class H1Issues:
             # если статус "Done" - берем дату изменения статуса, в другом случае - текущую дату
             if issue['fields']['status']['name'] == "Done":
                 arr_parsed['finished'] = issue['fields']['statuscategorychangedate'] # просто время изменения статуса
+                arr_parsed['state'] = 'Done'
             else:
+                arr_parsed['state'] = 'Open'
                 arr_parsed['finished'] = datetime.now(pytz.timezone('Europe/Moscow')).strftime(JiraAPI.JIRA_TIME_FORMAT)
             self.arr_parsed_issues_row.append(arr_parsed)
         return self.arr_parsed_issues_row

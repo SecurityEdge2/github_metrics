@@ -22,9 +22,12 @@ config = {
     'defect_criticality_dict': {
     #{Severity, criticality rate}
         'Critical': 5,
+
         'High': 2.5,
+        'Highest': 2.5,
         'Medium': 1,
-        'Low':   0.5
+        'Low':   0.5,
+        'Lowest':   0.5
     },
     'fix_time': {
         'Critical': 1,

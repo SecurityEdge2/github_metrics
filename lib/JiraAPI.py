@@ -10,10 +10,8 @@ class JiraAPI:
 
     @staticmethod
     def post_request(url: str, data: dict) -> object:
-        if not os.path.isfile('tokens/token.jira.txt'):
-           raise ValueError('tokens/token.jira.txt file with valid gitlab token required')
-        username = "a.voznesenskii@city-mobil.ru"
-        token = open('tokens/token.jira.txt', 'r').read()
+        username = "v.dovnar@city-mobil.ru"
+        token = os.environ['jira_cloud']
         url = JiraAPI.BASE_URL + url
         headers = {
             "Content-Type": "application/json"
@@ -24,15 +22,15 @@ class JiraAPI:
 
     @staticmethod
     def get_request(url: str) -> object:
-        if not os.path.isfile('tokens/token.jira.txt'):
-           raise ValueError('tokens/token.jira.txt file with valid gitlab token required')
-        username = "a.voznesenskii@city-mobil.ru"
-        token = open('tokens/token.jira.txt', 'r').read()
+        username = "v.dovnar@city-mobil.ru"
+        token = os.environ['jira_cloud']
         url = JiraAPI.BASE_URL + url
         headers = {
             "Content-Type": "application/json"
         }
-        response = requests.get(url, auth=(username, token), headers=headers)
+        proxies={"http": "http://127.0.0.1:8080", "https": "http://127.0.0.1:8080"}
+
+        response = requests.get(url, auth=(username, token), headers=headers,proxies=proxies,verify=False)
         return response
 
     @staticmethod

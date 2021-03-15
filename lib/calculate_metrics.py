@@ -22,6 +22,8 @@ def calculate_wrt_timeline(issues, app_weight):
     def calculate_wrt_for_issue(issue, app_weight, dc_dict):
         severity = issue['severity']
         defect_criticality = dc_dict[severity]
+        if app_weight is None:
+            app_weight = issue['business_criticality']
         issue_wrt = defect_criticality*app_weight
         return dict(wrt=issue_wrt,severity=severity,defect_criticality=defect_criticality,app_weight=app_weight)
 
@@ -63,7 +65,6 @@ def calculate_wrt_timeline(issues, app_weight):
         unit['wrt'] = issue['wrt']
         unit['business_criticality'] = issue['app_weight']
         return unit
-
 
 
     for cur_issue in issues:
@@ -166,15 +167,28 @@ def calculate_drw_timeline(issues,app_weight):
     first_date, end_date = _get_timeline_ends(issues)
     timeline = list()
     iter_day = first_date
+    handled_projects = set()
     while iter_day <= end_date:
         unit = dict(date=iter_day,
                     app_weight=app_weight, drw_1=timedelta(), drw_2=timedelta(), drw_3 = timedelta(),
                     drw_4 = timedelta(), drw_5 = timedelta(), drw_6=timedelta()
                     )
         count = 0
+        cur_url = None
         for issue in issues:
+            if cur_url is None:
+                if issues['target_url'] in handled_projects:
+                    continue
+                else:
+                    cur_url = issue['target_url']
+            if cur_url != issue['target_url']:
+                continue
+
+            cur_project = None
             if issue['start_date'] <= iter_day and iter_day <= issue['end_date']:
                 unit['project']  = issue['project']
+                if app_weight is None:
+                    app_weight = issue['business_criticality']
 
                 fix_time = issue['end_date'] - issue['start_date']
                 unit['drw_1'] += fix_time
@@ -183,6 +197,7 @@ def calculate_drw_timeline(issues,app_weight):
                 unit['drw_4'] += fix_time - timedelta(days=fix_time_regulation[issue['severity']])
                 unit['drw_5'] += (fix_time / fix_time_regulation[issue['severity']]) * defect_criticality_dict[issue['severity']] * app_weight
                 unit['drw_6'] += (fix_time - timedelta(days=fix_time_regulation[issue['severity']])) * defect_criticality_dict[issue['severity']] * app_weight
+                unit['target_url'] = issue['target_url']
                 count += 1
         unit['drw_1'] = unit['drw_1'].days
         unit['drw_2'] = unit['drw_2'].days
@@ -190,6 +205,7 @@ def calculate_drw_timeline(issues,app_weight):
         unit['drw_4'] = unit['drw_4'].days
         unit['drw_5'] = (unit['drw_5'] / count).days
         unit['drw_6'] = (unit['drw_6'] / count).days
+        handled_projects.add()
 
         timeline.append(unit)
 
