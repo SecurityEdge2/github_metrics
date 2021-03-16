@@ -47,16 +47,26 @@ def load_data():
 def _normolize_data(issues):
     results = list()
     for issue in issues:
+        #build target url
         if issue['target_url'] is None:
             print(issue['key'])
             continue
         if issue['target_url'][-1] == '/':
             issue['target_url'] = issue['target_url'][:-1]
+
+        #build project field
         project = re.findall(r'http.?\://(.*)', issue['target_url'])
         if len(project) > 0:
             project = project[0]
         else:
             project = issue['target_url']
+
+        #fix severity
+        if issue['priority'] == 'Highest':
+            issue['priority'] = 'High'
+        if issue['priority'] == 'Lowest':
+            issue['priority'] = 'Low'
+
         results.append(dict(state=issue['state'],
                        start_date=datetime.strptime(issue['created'].split('.')[0], '%Y-%m-%dT%H:%M:%S'),
                        end_date=datetime.strptime(issue['finished'].split('.')[0], '%Y-%m-%dT%H:%M:%S'),
