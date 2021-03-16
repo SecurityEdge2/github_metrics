@@ -53,7 +53,11 @@ def calculate_wrt_timeline(issues, app_weight):
     result = list()
     for header,value in c.items():
         project, date_type, date = header.split('|')
-        result.append(dict(project=project, aggregation_type=date_type, date=date, wrt=value))
+        if value >= 40:
+            significant = True
+        else:
+            significant = False
+        result.append(dict(project=project, aggregation_type=date_type, date=date, wrt=value, significant=significant))
 
 
     #agregate wrt
