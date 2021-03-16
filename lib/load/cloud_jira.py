@@ -3,7 +3,7 @@ from lib.jira_cloud_city import H1Issues
 import os
 from datetime import datetime
 import re
-
+from urllib import parse
 business_criticality = {
     'https://city-mobil.ru/taxiserv': 16,
     'https://fleet.city-mobil.ru': 14,
@@ -55,11 +55,15 @@ def _normolize_data(issues):
             issue['target_url'] = issue['target_url'][:-1]
 
         #build project field
-        project = re.findall(r'http.?\://(.*)', issue['target_url'])
-        if len(project) > 0:
-            project = project[0]
+        url = parse.urlparse(issue['target_url'])
+        if url.netloc == '':
+            print(issue['key'])
+            continue
+        if url.netloc == 'city-mobil.ru':
+            if url.path[:10] == '/taxiserv/':
+                project = 'city-mobil.ru/taxiserv/'
         else:
-            project = issue['target_url']
+            project = url.netloc
 
         #fix severity
         if issue['priority'] == 'Highest':

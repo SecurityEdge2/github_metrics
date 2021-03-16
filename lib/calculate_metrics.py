@@ -87,7 +87,6 @@ def calculate_drw_timeline2(issues):
     fix_time_regulation = config['fix_time']
     first_date, end_date = _get_timeline_ends(issues)
     timeline_counter = Counter()
-    iter_day = first_date
 
     for cur_issue in issues:
         fix_time = cur_issue['end_date'] - cur_issue['start_date']
