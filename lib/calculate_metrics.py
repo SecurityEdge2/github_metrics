@@ -43,7 +43,7 @@ def calculate_wrt_timeline(issues, app_weight=None):
         cur_issue.update(calculate_wrt_for_issue(cur_issue, app_weight, config['defect_criticality_dict']))
 
     c = Counter()
-
+    result = list()
     for cur_issue in issues:
         cur_issue['date'] = _get_m_by_date(cur_issue['start_date'])
         m = _get_m_by_date(cur_issue['start_date'])
@@ -55,7 +55,7 @@ def calculate_wrt_timeline(issues, app_weight=None):
         c['|'.join((project, 'M_convergence1', _get_m_by_date(cur_issue['end_date'])))] -= 1
         c['|'.join((project, 'Q_convergence1', q))] += 1
         c['|'.join((project, 'Q_convergence1', _get_q_by_date(cur_issue['end_date'])))] -= 1
-    result = list()
+
     for header,value in c.items():
         project, date_type, date = header.split('|')
         if date_type=='M' or date_type=='q':

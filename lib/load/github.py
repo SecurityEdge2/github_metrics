@@ -5,16 +5,21 @@ import os
 from datetime import datetime
 
 #загрузка данных из github
-def load_from_github(github_repo, security_labels):
+def load_from_github():
     g = Github(os.environ['github_token'])
-    repo = g.get_repo(github_repo)
-    issues = repo.get_issues(labels=security_labels, state='all')
-    issues = _normolize_data(list(issues),github_repo)
-    issues.sort(key=lambda x:x['start_date'])
-    return issues
+    result_issue = list()
+    for project, info in config['github_projects'].items():
+        repo = g.get_repo(project)
+        business_criticality = info['business_criticality']
+        tags = info['tags']
+        issues = repo.get_issues(labels=tags, state='all')
+        issues = _normolize_data(list(issues),repo,business_criticality)
+        result_issue.extend(issues)
+    result_issue.sort(key=lambda x:x['start_date'])
+    return result_issue
 
 #приведение к универсальному формату
-def _normolize_data(issues, github_repo):
+def _normolize_data(issues, github_repo,business_criticality):
     def get_severity_by_comments(issue, dc_table):
         for dc_threshold, severity in dc_table:
             if issue.comments >= dc_threshold:
@@ -23,7 +28,7 @@ def _normolize_data(issues, github_repo):
     result = []
     for issue in issues:
         #получаем имя проекта
-        project = github_repo.split('/')[1]
+        project = github_repo.full_name.split('/')[1]
         #получаем severity на основе информации о количестве комментариев
         severity = get_severity_by_comments(issue, config['github_severity_list'])
 
@@ -39,6 +44,7 @@ def _normolize_data(issues, github_repo):
                             severity=severity,
                             project=project,
                             title=issue.title,
+                            business_criticality=business_criticality,
                             labelts=issue.labels))
 
 

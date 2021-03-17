@@ -1,14 +1,14 @@
 config = {
-    'app_weight': {
-        'ClickHouse/ClickHouse': (13,['security']),
-        'authelia/authelia' : (9,['security']),
-        'gravitational/teleport' : (17,['security']),
-        'rust-lang/rust': (5,['A-security']),
-        'openshift/origin': (7,['area/security']),
-        'kubernetes/kubernetes': (7,['area/security']),
-        'ansible/ansible': (14, ['security']),
-        'dotnet/runtime': (12,['Security']),
-        'nodejs/node': (16,['security'])
+    'github_projects': {
+        'ClickHouse/ClickHouse': {'business_criticality': 13, 'tags': ['security']},
+        'authelia/authelia': {'business_criticality': 9, 'tags': ['security']},
+        'gravitational/teleport': {'business_criticality': 17, 'tags': ['security']},
+        'rust-lang/rust': {'business_criticality': 5, 'tags': ['A-security']},
+        'openshift/origin': {'business_criticality': 7, 'tags': ['area/security']},
+        'kubernetes/kubernetes': {'business_criticality': 7, 'tags': ['area/security']},
+        'ansible/ansible': {'business_criticality': 14, 'tags': ['security']},
+        'dotnet/runtime': {'business_criticality': 12, 'tags': ['Security']},
+        'nodejs/node': {'business_criticality': 16, 'tags': ['security']}
 
     },
     'github_severity_list': (
@@ -39,6 +39,19 @@ config = {
     'mongodb': {
         'host':'192.168.49.20',
         'port': 27017,
-        'db': 'WRT'
+    },
+    'services': {
+        'github': {
+            'enabled': True,
+            'upload_db': 'github',
+        },
+        'jira': {
+            'enabled': True,
+            'upload_db': 'wrt',
+        },
+        'metrics': {
+            'wrt': True,
+            'drw': True
+        }
     }
 }
