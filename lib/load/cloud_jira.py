@@ -5,11 +5,7 @@ from datetime import datetime
 import re
 from urllib import parse
 business_criticality = {
-    'https://city-mobil.ru/taxiserv': 16,
-    'https://fleet.city-mobil.ru': 14,
-    'https://corporate.city-mobil.ru': 13,
-    'https://panel.city-mobil.ru': 9,
-    'https://city-mobil.ru': 8
+    '':0
 }
 
 
